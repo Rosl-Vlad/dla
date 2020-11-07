@@ -15,5 +15,9 @@
   "f_max": 10000,
 
   "epoch": 40,
-  "learning_rate": 0.001
+  "learning_rate": 0.001,
+
+  "rnn_dim": 256,
+  "n_class":  29,
+  "n_feats": 64
 }

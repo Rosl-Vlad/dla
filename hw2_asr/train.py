@@ -48,7 +48,7 @@ def _train(train_loader, epoch, model, optimizer, criterion, device, batch_size)
 
 
 def train(config, train_loader, device):
-    model = SpeechRecognition() #TODO: проставить параметры
+    model = SpeechRecognition(config["rnn_dim"], config["n_class"], config["n_feats"])
 
     criterion = nn.CTCLoss(blank=28).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["learning_rate"])
