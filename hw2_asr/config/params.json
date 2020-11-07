@@ -1,0 +1,19 @@
+{
+  "path": "",
+  "padding_text": 148,
+  "batch_size":  64,
+  "padding_spec": 870,
+
+  "train_test_split": 0.1,
+
+  "freq_mask_param": 10,
+  "time_mask_param": 35,
+  "sample_rate": 16000,
+  "n_mels": 64,
+  "n_fft": 1024,
+  "hop_length": 256,
+  "f_max": 10000,
+
+  "epoch": 40,
+  "learning_rate": 0.001
+}
