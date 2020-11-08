@@ -13,9 +13,7 @@ def set_seed(seed=42):
 
 def main():
     set_seed()
-    print("done")
     config = set_config()
-    print(config)
     train_loader, valid_loader, id_letters = get_loader(config)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 

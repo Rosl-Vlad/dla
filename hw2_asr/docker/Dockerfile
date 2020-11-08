@@ -8,8 +8,10 @@ RUN apt-get install -y \
 	git
 
 RUN python3 -m pip install --upgrade pip
-COPY requirements.txt .
+COPY requirements.txt ..
 RUN pip3 install -r requirements.txt
 
+RUN ls -l
 RUN wget https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
 RUN tar -xvf LJSpeech-1.1.tar.bz2
+RUN mv LJSpeech-1.1 ../
