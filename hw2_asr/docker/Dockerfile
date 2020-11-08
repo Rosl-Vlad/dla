@@ -1,5 +1,10 @@
 FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 
+ENV TZ=Europe/Moscow
+ENV TERM xterm-256color
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apt-get update
 RUN apt-get install -y \
 	python3-pip \
@@ -7,16 +12,10 @@ RUN apt-get install -y \
 	libboost-all-dev \
 	git
 
-ENV TZ=Europe/Moscow
-ENV TERM xterm-256color
-
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 RUN python3 -m pip install --upgrade pip
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-RUN ls -l
 RUN wget https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
 RUN tar -xvf LJSpeech-1.1.tar.bz2
-RUN mv LJSpeech-1.1 ../
+RUN rm LJSpeech-1.1.tar.bz2

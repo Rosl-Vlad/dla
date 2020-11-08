@@ -1,5 +1,5 @@
 {
-  "path": "LJSpeech-1.1/",
+  "path": "../LJSpeech-1.1/",
   "padding_text": 148,
   "batch_size":  64,
   "padding_spec": 870,
