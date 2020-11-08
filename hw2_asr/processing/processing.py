@@ -4,7 +4,6 @@ import pandas as pd
 
 
 LETTERS = "qwertyuiopasdfghjklzxcvbnm "
-END_TOKEN = 27
 
 
 def processing_LJ(path):

@@ -6,6 +6,8 @@ from .processing import processing_LJ, filter_df
 from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 
+END_TOKEN = 27
+
 
 class LoadDataset(Dataset):
     def __init__(self, data, path, transform, padding_mel, padding_text):
