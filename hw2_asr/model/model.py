@@ -37,18 +37,18 @@ class ResidualCNN(nn.Module):
         return x
 
 
-class BidirectionalGRU(nn.Module):
-    def __init__(self, rnn_dim, hidden_size, dropout, batch_first):
-        super(BidirectionalGRU, self).__init__()
+class BidirectionalLSTM(nn.Module):
+    def __init__(self, rnn_dim, hidden_size, dropout):
+        super(BidirectionalLSTM, self).__init__()
 
-        self.BiGRU = nn.GRU(input_size=rnn_dim, hidden_size=hidden_size, num_layers=1, batch_first=batch_first, bidirectional=True)
+        self.BiLSTM = nn.LSTM(input_size=rnn_dim, hidden_size=hidden_size, num_layers=2, batch_first=True, bidirectional=True)
         self.layer_norm = nn.LayerNorm(rnn_dim)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         x = self.layer_norm(x)
         x = F.gelu(x)
-        x, _ = self.BiGRU(x)
+        x, _ = self.BiLSTM(x)
         x = self.dropout(x)
         return x
 
@@ -66,9 +66,9 @@ class Classifier(nn.Module):
         return self.clf2(x)
 
 
-class SpeechRecognition(nn.Module):
+class ASR(nn.Module):
     def __init__(self, rnn_dim, n_class, n_feats, stride=2, dropout=0.1):
-        super(SpeechRecognition, self).__init__()
+        super(ASR, self).__init__()
         n_feats = n_feats//2
         self.cnn = nn.Conv2d(1, 32, 3, stride=stride, padding=3//2)
 
@@ -77,7 +77,7 @@ class SpeechRecognition(nn.Module):
 
         self.fully_connected = nn.Linear(n_feats*32, rnn_dim)
 
-        self.birnn_layers = BidirectionalGRU(rnn_dim=rnn_dim, hidden_size=rnn_dim, dropout=dropout)
+        self.birnn_layers = BidirectionalLSTM(rnn_dim=rnn_dim, hidden_size=rnn_dim, dropout=dropout)
 
         self.classifier = Classifier(rnn_dim, dropout, n_class)
 

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from datetime import datetime
 import torch.nn.functional as F
-from .model.model import SpeechRecognition
+from .model.model import ASR
 
 
 def get_time(start_time):
@@ -48,7 +48,7 @@ def _train(train_loader, epoch, model, optimizer, criterion, device, batch_size)
 
 
 def train(config, train_loader, device):
-    model = SpeechRecognition(config["rnn_dim"], config["n_class"], config["n_feats"])
+    model = ASR(config["rnn_dim"], config["n_class"], config["n_feats"])
 
     criterion = nn.CTCLoss(blank=28).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["learning_rate"])

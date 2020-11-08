@@ -20,8 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49a784b6-5766-42ce-ab28-06f6e4ddb207" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/hw2_asr/processing/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw2_asr/processing/processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/hw2_asr/processing/processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw2_asr/docker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/hw2_asr/docker/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw2_asr/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/hw2_asr/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw2_asr/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/hw2_asr/model/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw2_asr/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/hw2_asr/train.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,5 +77,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="456" y="259" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1604826166572">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="456" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1604826166572" />
   </component>
 </project>
