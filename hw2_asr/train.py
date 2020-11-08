@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from datetime import datetime
 import torch.nn.functional as F
-from .model.model import ASR
+from model.model import ASR
 
 
 def get_time(start_time):
