@@ -23,7 +23,7 @@ def _train(train_loader, epoch, model, optimizer, criterion, device, batch_size)
 
         optimizer.zero_grad()
 
-        outputs = model(melspec.unsqueeze(1).transpose(2, 3))
+        outputs = model(melspec.unsqueeze(1).transpose(2, 3).to(device))
         outputs = F.log_softmax(outputs, dim=2)
 
         loss = criterion(outputs.transpose(0, 1), tokens, padded_len, target_len)
@@ -49,6 +49,7 @@ def _train(train_loader, epoch, model, optimizer, criterion, device, batch_size)
 
 def train(config, train_loader, device):
     model = ASR(config["rnn_dim"], config["n_class"], config["n_feats"])
+    model = model.to(device)
 
     criterion = nn.CTCLoss(blank=28).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["learning_rate"])
