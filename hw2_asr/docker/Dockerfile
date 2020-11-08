@@ -7,8 +7,13 @@ RUN apt-get install -y \
 	libboost-all-dev \
 	git
 
+ENV TZ=Europe/Moscow
+ENV TERM xterm-256color
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN python3 -m pip install --upgrade pip
-COPY requirements.txt ..
+COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 RUN ls -l
