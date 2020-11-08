@@ -1,4 +1,3 @@
-from .model import model
 from .processing.dataset import *
 from .config.config import set_config
 from .train import train
@@ -12,7 +11,7 @@ def main():
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     asr, criterion = train(config, train_loader, device)
-    evaluate(valid_loader, model, criterion, device, id_letters)
+    evaluate(valid_loader, asr, criterion, device, id_letters)
 
 
 if __name__ == '__main__':
