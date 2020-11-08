@@ -79,7 +79,7 @@ class ASR(nn.Module):
 
         self.birnn_layers = BidirectionalLSTM(rnn_dim=rnn_dim, hidden_size=rnn_dim, dropout=dropout)
 
-        self.classifier = Classifier(rnn_dim, dropout, n_class)
+        self.classifier = Classifier(rnn_dim, n_class, dropout)
 
     def forward(self, x):
         x = self.cnn(x)
