@@ -2,7 +2,7 @@ import torch
 from processing.dataset import get_loader
 from config.config import set_config
 from train import train
-from eval import evaluate
+from validate import evaluate
 
 
 def set_seed(seed=42):

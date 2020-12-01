@@ -1,0 +1,129 @@
+###self.linear_projection = LinearNorm( decoder_rnn_dim + encoder_embedding_dim, n_mel_channels * n_frames_per_step)
+class Conv(nn.Module):
+    def __init__(self, n_ch, out_ch, k_size=4):
+        super(Conv, self).__init__()
+        self.conv = nn.Conv1d(n_ch, out_ch, k_size)
+        self.bn = nn.BatchNorm2d(out_ch)
+        self.relu = nn.LeakyReLU(0.2)
+        
+    def forward(x):
+        return self.relu(self.bn(self.conv(x)))
+    
+
+class LSTM_L(nn.Module):
+    def __init__(self, input_size, hidden_size, bidirectional=True, n_layers=3):
+        super(BiLSTM, self).__init__()
+        self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size, n_layers=n_layers, bidirectional=bidirectional)
+        
+    def forward(x):
+        return self.lstm(x)
+    
+
+class LocationL(nn.Module):
+    def __init__(self, attention_n_filters, attention_k_size, attention_dim):
+        super(LocationL, self).__init__()
+        padding = int((attention_kernel_size - 1) / 2)
+        self.location_conv = Conv(2, attention_n_filters, k_size=attention_k_size)
+                                  
+        self.locat_linear = nn.Linear(attention_n_filters, attention_dim)
+
+    def forward(self, attention_weights):
+        a = self.location_conv(attention_weights)
+        a = self.locat_linear(a.transpose(1, 2))
+        return a
+    
+    
+class LSAttention(nn.Module):
+    def __init__(self, attention_rnn_dim, embedding_dim,
+                 attention_dim, attention_location_n_filters,
+                 attention_location_k_size):
+        super(LSAttention, self).__init__()
+        
+        self.score_mask_value = -float("inf")
+        self.q = nn.Linear(attention_rnn_dim, attention_dim)
+        self.k = nn.Linear(embedding_dim, attention_dim)
+        self.v = nn.Linear(attention_dim, 1)
+        self.location_layer = LocationL(attention_location_n_filters,
+                                        attention_location_k_size,
+                                        attention_dim)
+
+    def get_alignment_energies(self, query, processed_memory,
+                               attention_weights_cat):
+        
+        processed_query = self.q(query.unsqueeze(1))
+        processed_attention_weights = self.location_layer(attention_weights_cat)
+        energies = self.v(torch.tanh(processed_query + processed_attention_weights + processed_memory))
+
+        energies = energies.squeeze(2)
+        return energies
+
+    def forward(self, attention_hidden_state, memory, processed_memory,
+                attention_weights_cat, mask):
+       
+        alignment = self.get_alignment_energies(
+            attention_hidden_state, processed_memory, attention_weights_cat)
+
+        alignment = alignment.k(mask, self.score_mask_value)
+
+        attention_weights = F.softmax(alignment, dim=1)
+        attention_context = torch.bmm(attention_weights.unsqueeze(1), memory)
+        attention_context = attention_context.squeeze(1)
+
+        return attention_context, attention_weights
+    
+
+class PostNet(nn.Module):
+    def __init__(self):
+        super(PostNet, self).__init__()
+        pass
+    def forward(x):
+        pass
+    
+
+class PostNet(nn.Module):
+    def __init__(self, n_convs, num_mels, num_channels=512, k=5):
+        super(PostNet, self).__init__()
+
+        self.layers = [Conv(in_channels=num_mels, out_channels=num_channels, kernel_size=k)]
+        self.layers += [Conv(in_channels=num_channels, out_channels=num_channels, kernel_size=k)
+                        for i in range(n_convs)]
+        self.layers += [Conv(in_channels=num_channels, out_channels=num_mels, kernel_size=kernel_size)]
+        self.layers = nn.ModuleList(self.layers)
+
+    def forward(self, inputs):
+        outputs = inputs.transpose(1, 2)
+        for layer in self.layers:
+            outputs = layer(outputs)
+        outputs = outputs.transpose(1, 2)
+        return outputs
+
+                            
+class PreNet(nn.Module):
+    def __init__(self, in_dim, sizes):
+        super(PreNet, self).__init__()
+        in_sizes = [in_dim] + sizes[:-1]
+        self.layers = nn.ModuleList([nn.Linear(in_size, out_size) for (in_size, out_size) in zip(in_sizes, sizes)])
+        self.relu = nn.Relu()
+
+    def forward(self, x):
+        for lin in self.layers:
+            x = self.relu(lin(x))
+        return x
+
+class Encoder(nn.Module):
+    def __init__(self, n_chars, embed_dim=512):
+        super(Encoder, self).__init__()
+        self.embedding_layer = nn.Embedding(n_chars, embed_dim)
+        self.conv_layers = nn.ModuleList([Conv(embed_dim, embed_dim, 5) for i in range(3)])
+        self.lstm = LSTM_L(embed_dim, int(embed_dim / 2), bidirectional=True)
+    
+    def forward(self, chars, lengths):
+        x = self.embedding(chars)
+        x = x.transpose(1, 2)
+        
+        for layer in self.conv_layers:
+            x = layer(x)
+        x = x.transpose(1, 2)
+
+        x, _ = self.lstm(x)
+        return x
