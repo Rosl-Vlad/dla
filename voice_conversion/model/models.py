@@ -1,4 +1,4 @@
-from .blocks import ConvBasicBlock, ConvDis
+from blocks import ConvBasicBlock, ConvDis
 from torch import nn
 
 

@@ -2,13 +2,15 @@ import sys
 import json
 import torch
 
-from .train.non_adversarial import train
-from .test import test
+from train.non_adversarial import train
+from test import test
 
 
 def set_config():
     with open("config/config.json", "r") as rdr:
         config = json.load(rdr)
+
+    config["device"] = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     return config
 
 

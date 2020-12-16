@@ -2,11 +2,9 @@ import torch
 from torch import nn
 
 from torch.utils.data import DataLoader
-from ..model.models import Encoder, Decoder
-from .data_loader import LoadDataset, get_transcript_speech
+from .model.models import Encoder, Decoder
+from data_loader import LoadDataset, get_transcript_speech
 
-
-device = torch.device('cuda:4' if torch.cuda.is_available() else 'cpu')
 
 # TODO: перевести все на конфиг
 def init(config):

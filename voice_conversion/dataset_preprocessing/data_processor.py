@@ -8,9 +8,7 @@ import torch
 from torch import nn
 
 import torchaudio
-
 import librosa
-from matplotlib import pyplot as plt
 
 
 @dataclass
@@ -140,10 +138,3 @@ if __name__ == "__main__":
     for i, (male, female) in enumerate(train_loader):
         torch.save(male, path + "male/" + "file_" + str(i) + ".pt")
         torch.save(female, path + "female/" + "file_" + str(i) + ".pt")
-
-
-
-
-
-
-

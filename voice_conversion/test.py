@@ -5,9 +5,9 @@ import librosa
 import torch
 import torchaudio
 
-from .model.models import Encoder, Decoder
-from .model.vocoder import Vocoder
-from .dataset_preprocessing.data_processor import MelSpectrogram, MelSpectrogramConfig
+from model.models import Encoder, Decoder
+from model.vocoder import Vocoder
+from dataset_preprocessing.data_processor import MelSpectrogram, MelSpectrogramConfig
 
 
 def init(config):
