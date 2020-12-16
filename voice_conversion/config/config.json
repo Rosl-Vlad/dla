@@ -1,0 +1,9 @@
+{
+
+  "path": "",
+  "epoch": 150,
+  "batch_size": 64,
+  "num_workers": 20,
+  "lr": 0.001,
+  "l1_wight": 100
+}
