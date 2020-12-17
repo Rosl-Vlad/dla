@@ -1,4 +1,4 @@
-from blocks import ConvBasicBlock, ConvDis
+from .blocks import ConvBasicBlock, ConvDis
 from torch import nn
 
 
@@ -13,7 +13,6 @@ class Encoder(nn.Module):
         self.conv = nn.Sequential(*[self.block(ch[i - 1] if i > 0 else inp,
                                                ch[i],
                                                ks[i],
-                                               1
                                                ) for i in range(len(ks))])
 
     def forward(self, x):

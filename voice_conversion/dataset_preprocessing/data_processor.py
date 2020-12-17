@@ -2,6 +2,7 @@ import os
 import tarfile
 from dataclasses import dataclass
 
+from google_drive_downloader import GoogleDriveDownloader as gdd
 from torch.utils.data import Dataset, DataLoader
 
 import torch
@@ -112,6 +113,15 @@ def download_data_set():
 
     # create dir for result dataset
     os.system("mkdir specData")
+
+
+def download_vovoder():
+    os.system("git clone https://github.com/NVIDIA/waveglow.git")
+
+    gdd.download_file_from_google_drive(
+        file_id='1rpK8CzAAirq9sWZhe9nlfvxMF1dRgFbF',
+        dest_path='./waveglow_256channels_universal_v5.pt'
+    )
 
 
 if __name__ == "__main__":

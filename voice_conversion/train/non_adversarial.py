@@ -2,8 +2,8 @@ import torch
 from torch import nn
 
 from torch.utils.data import DataLoader
-from .model.models import Encoder, Decoder
-from data_loader import LoadDataset, get_transcript_speech
+from model.models import Encoder, Decoder
+from .data_loader import LoadDataset, get_transcript_speech
 
 
 # TODO: перевести все на конфиг
