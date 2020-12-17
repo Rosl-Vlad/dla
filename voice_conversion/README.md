@@ -22,3 +22,4 @@
 * [Спектограммы датасетов](https://www.kaggle.com/vladislavrr/spectrogram-lj-speech/settings)
 
 
+Для загрузки весов необходимо воспользоваться командой `git lfs fetch`

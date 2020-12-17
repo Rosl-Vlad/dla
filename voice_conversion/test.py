@@ -1,6 +1,6 @@
-from IPython import display
-
+from hashlib import sha256
 import librosa
+import soundfile as sf
 
 import torch
 import torchaudio
@@ -11,9 +11,9 @@ from dataset_preprocessing.data_processor import MelSpectrogram, MelSpectrogramC
 
 
 def init(config):
-    encoder = Encoder(80, [160, 320, 640, 1280, 1024], [64, 32, 16, 8, 4])
-    decoder_m = Decoder(1024, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
-    decoder_f = Decoder(1024, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
+    encoder = Encoder(80, [160, 320, 640, 1280, 64], [64, 32, 16, 8, 4])
+    decoder_m = Decoder(64, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
+    decoder_f = Decoder(64, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
 
     decoder_m = decoder_m.to(config["device"])
     decoder_f = decoder_f.to(config["device"])
@@ -50,5 +50,8 @@ def test(config, wav_path):
     wav = featurizer(wav)
     wav = wav.reshape(1, wav.shape[0], wav.shape[1])
 
-    display.Audio(vocoder.inference(decoder_f(encoder(wav.to(config["device"])))[0].unsqueeze(0).cpu().detach()).squeeze(),
-                  rate=22050)
+    y = vocoder.inference(decoder_f(encoder(wav.to(config["device"])))[0].unsqueeze(0).cpu().detach()).squeeze()
+    hashe = sha256(wav_path.encode('utf-8')).hexdigest()
+
+    sf.write('output_%s.wav' % hashe[:10], y, 22050)
+

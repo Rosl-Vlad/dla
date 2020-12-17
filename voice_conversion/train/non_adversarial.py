@@ -8,9 +8,9 @@ from .data_loader import LoadDataset, get_transcript_speech
 
 # TODO: перевести все на конфиг
 def init(config):
-    encoder = Encoder(80, [160, 320, 640, 1280, 1024], [64, 32, 16, 8, 4])
-    decoder_m = Decoder(1024, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
-    decoder_f = Decoder(1024, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
+    encoder = Encoder(80, [160, 320, 640, 1280, 64], [64, 32, 16, 8, 4])
+    decoder_m = Decoder(64, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
+    decoder_f = Decoder(64, [1280, 640, 320, 160, 80], [4, 8, 16, 32, 64])
 
     decoder_m = decoder_m.to(config["device"])
     decoder_f = decoder_f.to(config["device"])
